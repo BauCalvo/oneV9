@@ -1,5 +1,6 @@
 package bau.LoLSearch.Srvices;
 
+import bau.LoLSearch.Records.Exports.GameDataExport;
 import bau.LoLSearch.Records.GameData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,36 @@ public class GameService {
     @Value("${api.key}")
     private String API_KEY;
 
+    public ArrayList<GameDataExport> getGamesDataByGameId(List<String> gameIds) {
+
+        ExecutorService executor = Executors.newFixedThreadPool(10);
+
+
+        List<Future<GameData>> futures = new ArrayList<>();
+
+
+        for (String gameId : gameIds) {
+            Callable<GameData> task = () -> fetchGameDataByGameId(gameId);
+            futures.add(executor.submit(task));
+        }
+
+
+        ArrayList<GameData> gameDataList = new ArrayList<>();
+
+        try {
+            for (Future<GameData> future : futures) {
+                gameDataList.add(future.get());
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        executor.shutdown();
+
+        return getExportData(gameDataList);
+    }
+
+
     public GameData fetchGameDataByGameId(String gameId) {
         String url = UriComponentsBuilder
                 .fromUriString("https://americas.api.riotgames.com/lol/match/v5/matches/{gameId}")
@@ -40,33 +71,14 @@ public class GameService {
         }
     }
 
-
-    public ArrayList<GameData> getGamesDataByGameId(List<String> gameIds) {
-        // Create an ExecutorService with a fixed thread pool
-        ExecutorService executor = Executors.newFixedThreadPool(10);
-
-        // List to hold Future objects
-        List<Future<GameData>> futures = new ArrayList<>();
-
-        // Submit tasks for each gameId
-        for (String gameId : gameIds) {
-            Callable<GameData> task = () -> fetchGameDataByGameId(gameId);
-            futures.add(executor.submit(task));
+    private ArrayList<GameDataExport> getExportData(ArrayList<GameData> data) {
+        ArrayList<GameDataExport> exportList = new ArrayList<>();
+        for (GameData gameData : data) {
+            exportList.add(new GameDataExport(gameData));
         }
-
-        // List to hold the results in the correct order
-        ArrayList<GameData> gameDataList = new ArrayList<>();
-
-        try {
-            for (Future<GameData> future : futures) {
-                gameDataList.add(future.get());
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        // Shutdown the executor
-        executor.shutdown();
-
-        return gameDataList;
+        return exportList;
     }
+
+
+
 }
