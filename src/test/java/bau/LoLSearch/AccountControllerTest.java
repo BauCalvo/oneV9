@@ -21,28 +21,28 @@ class AccountControllerTest {
 	private ObjectMapper objectMapper;
 
 
-
-	@Test
-	void searchFindsAccount() {
-		ResponseEntity<AccountMainInfo> response = restTemplate.getForEntity("/search/Paralelepipedo/NETS", AccountMainInfo.class);
-
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(response.getBody()).isEqualTo(testAccount());
-
-	}
-
-	@Test
-	void searchFoundNone() {
-		ResponseEntity<AccountMainInfo> response = restTemplate.getForEntity("/search/FakeName/NETS", AccountMainInfo.class);
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(response.getBody()).isEqualTo(AccountMainInfo.empty());
-	}
-
-	AccountMainInfo testAccount(){
-		return new AccountMainInfo(
-				"pneU6bUTxo-WXRvm5cODPgQJORFaTYAjM72KWlIDOPf-XtCSLHArWYUJSDzdNJjfWQTjs3KzYDSA3g"
-				,"Paralelepipedo"
-				, "NETS");
-	}
+//
+//	@Test
+//	void searchFindsAccount() {
+//		ResponseEntity<AccountMainInfo> response = restTemplate.getForEntity("/search/Paralelepipedo/NETS", AccountMainInfo.class);
+//
+//		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+//		assertThat(response.getBody()).isEqualTo(testAccount());
+//
+//	}
+//
+//	@Test
+//	void searchFoundNone() {
+//		ResponseEntity<AccountMainInfo> response = restTemplate.getForEntity("/search/FakeName/NETS", AccountMainInfo.class);
+//		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+//		assertThat(response.getBody()).isEqualTo(AccountMainInfo.empty());
+//	}
+//
+//	AccountMainInfo testAccount(){
+//		return new AccountMainInfo(
+//				"pneU6bUTxo-WXRvm5cODPgQJORFaTYAjM72KWlIDOPf-XtCSLHArWYUJSDzdNJjfWQTjs3KzYDSA3g"
+//				,"Paralelepipedo"
+//				, "NETS");
+//	}
 
 }

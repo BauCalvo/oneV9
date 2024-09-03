@@ -1,5 +1,6 @@
 package bau.LoLSearch;
 
+import bau.LoLSearch.Records.Exports.GameDataExport;
 import bau.LoLSearch.Records.GameData;
 import bau.LoLSearch.Srvices.GameService;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ public class GameServiceTest {
 
     @Test
     public void getGamesDataByGameIdTest() {
-        ArrayList<GameData> gamesData = gameService.getGamesDataByGameId(gamesIdTest());
+        ArrayList<GameDataExport> gamesData = gameService.getGamesDataByGameId(gamesIdTest());
 
         assertEquals(gamesIdTest().size(),gamesData.size());
 
