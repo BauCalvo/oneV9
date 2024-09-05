@@ -27,21 +27,21 @@ public class AccountController {
 
     @GetMapping("search/{gameName}/{tagLine}")
     public ResponseEntity<ArrayList<GameDataExport>> search(@PathVariable String gameName,
-                                                  @PathVariable String tagLine ,
-                                                  @RequestParam(required = false)String queue) {
+                                                            @PathVariable String tagLine ,
+                                                            @RequestParam(required = false)String queue) {
 
-        try {
+        AccountMainInfo accountMainInfo = accountService.fetchAccountMainInfo(gameName, tagLine);
 
-            AccountMainInfo accountMainInfo = accountService.fetchAccountMainInfo(gameName, tagLine);
-            List<String> gameIds = accountService.fetchAccountGamesIdsBypuuidAndQueue(accountMainInfo.puuid(),queue);
+        if (accountMainInfo ==null)
+            return ResponseEntity.status(404).body(null);
 
-            ArrayList<GameDataExport> gameDataList = gameService.getGamesDataByGameId(gameIds);
-            return ResponseEntity.ok(gameDataList);
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.ok(null);
-        }
+        List<String> gameIds = accountService.fetchAccountGamesIdsBypuuidAndQueue(accountMainInfo.puuid(),queue);
 
+        if (gameIds == null)
+            return ResponseEntity.status(404).body(null);
+
+        ArrayList<GameDataExport> gameDataList = gameService.getGamesDataByGameId(gameIds);
+        return ResponseEntity.ok(gameDataList);
 
     }
 }
