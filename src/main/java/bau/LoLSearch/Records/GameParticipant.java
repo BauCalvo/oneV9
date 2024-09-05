@@ -44,8 +44,10 @@ public record GameParticipant(int allInPings, int assistMePings, int assists
         , int wardsKilled, int wardsPlaced, boolean win) {
 
     public record Challenges(
+            int highestCrowdControlScore,
+            int highestWardKills,int highestChampionDamage, int junglerKillsEarlyJungle,int killsOnLanersEarlyJungleAsJungler,
             int playerScore0, int playerScore1, int playerScore10, int playerScore11
-            ,int playerScore2, int playerScore3, int playerScore4, int playerScore5
+            ,double fastestLegendary,int playerScore2, int playerScore3, int playerScore4, int playerScore5
             ,int playerScore6, int playerScore7, int playerScore8, int playerScore9
             ,int abilityUses, int acesBefore15Minutes, int alliedJungleMonsterKills
             ,int baronBuffGoldAdvantageOverThreshold, int baronTakedowns

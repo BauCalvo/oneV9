@@ -38,7 +38,7 @@ public class AccountService {
             ResponseEntity<AccountMainInfo> response = restTemplate.getForEntity(url, AccountMainInfo.class);
             return response.getBody();
         } catch (RestClientException e) {
-            return AccountMainInfo.empty();
+            return null;
         }
     }
 
@@ -58,7 +58,7 @@ public class AccountService {
 
             return response.getBody();
         } catch (RestClientException e) {
-            return new ArrayList<>();
+            return null;
         }
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class AccountServiceTest {
@@ -16,32 +16,30 @@ public class AccountServiceTest {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private AccountMainInfo testAccount;
+
     @Test
     public void fetchAccountMainInfoTest() {
         AccountMainInfo fetchedAccountMainInfo = accountService.fetchAccountMainInfo("Paralelepipedo","NETS");
-        assertThat(fetchedAccountMainInfo.equals(testAccount())).isTrue();
+
+        assertEquals(testAccount,fetchedAccountMainInfo);
 
         AccountMainInfo fetchedFakeName = accountService.fetchAccountMainInfo("fakeName","NETS");
-        assertThat(fetchedFakeName.equals(AccountMainInfo.empty())).isTrue();
+
+        assertNull(fetchedFakeName);
     }
 
     @Test
     public void fetchAccountGamesIdsBypuuidAndQueueTest() {
-        ArrayList<String> gameIds = accountService.fetchAccountGamesIdsBypuuidAndQueue(testAccount().puuid(),"");
+        ArrayList<String> gameIds = accountService.fetchAccountGamesIdsBypuuidAndQueue(testAccount.puuid(),"");
 
         String idPattern = "^LA2_\\d{10}$";
-        assertThat("LA2_1440131324").matches(idPattern);
 
-        System.out.println(gameIds);
-        assertThat(gameIds.stream().allMatch(id -> id.matches(idPattern))).isTrue();
+        assertTrue(gameIds.stream().allMatch(id -> id.matches(idPattern)));
     }
 
 
-    AccountMainInfo testAccount(){
-        return new AccountMainInfo(
-                "pneU6bUTxo-WXRvm5cODPgQJORFaTYAjM72KWlIDOPf-XtCSLHArWYUJSDzdNJjfWQTjs3KzYDSA3g"
-                ,"Paralelepipedo"
-                , "NETS");
-    }
+
 
 }

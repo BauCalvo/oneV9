@@ -2,6 +2,7 @@ package bau.LoLSearch.Srvices;
 
 import bau.LoLSearch.Records.Exports.GameDataExport;
 import bau.LoLSearch.Records.GameData;
+import bau.LoLSearch.Repositorys.GameDataExportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,15 @@ public class GameService {
 
     private final RestTemplate restTemplate;
 
+    private final GameDataExportRepository repository;
+
     @Autowired
-    public GameService(RestTemplate restTemplate) {
+    public GameService(RestTemplate restTemplate, GameDataExportRepository repository) {
         this.restTemplate = restTemplate;
+        this.repository = repository;
     }
+
+
 
     @Value("${api.key}")
     private String API_KEY;
@@ -30,20 +36,16 @@ public class GameService {
 
         ExecutorService executor = Executors.newFixedThreadPool(10);
 
-
-        List<Future<GameData>> futures = new ArrayList<>();
-
+        List<Future<GameDataExport>> futures = new ArrayList<>();
 
         for (String gameId : gameIds) {
-            Callable<GameData> task = () -> fetchGameDataByGameId(gameId);
+            Callable<GameDataExport> task = () -> getGameDataByGameId(gameId);
             futures.add(executor.submit(task));
         }
-
-
-        ArrayList<GameData> gameDataList = new ArrayList<>();
+        ArrayList<GameDataExport> gameDataList = new ArrayList<>();
 
         try {
-            for (Future<GameData> future : futures) {
+            for (Future<GameDataExport> future : futures) {
                 gameDataList.add(future.get());
             }
         }catch (Exception e) {
@@ -52,32 +54,47 @@ public class GameService {
 
         executor.shutdown();
 
-        return getExportData(gameDataList);
+        return gameDataList;
     }
 
 
-    public GameData fetchGameDataByGameId(String gameId) {
+    public GameDataExport getGameDataByGameId(String matchId) {
+        GameDataExport gameData =null;
+        gameData = findGameInDatabaseById(matchId);
+        if (gameData == null) {
+            gameData = fetchGameFromApiById(matchId);
+        }
+        return gameData;
+    }
+
+    private GameDataExport fetchGameFromApiById(String matchId) {
         String url = UriComponentsBuilder
                 .fromUriString("https://americas.api.riotgames.com/lol/match/v5/matches/{gameId}")
                 .queryParam("api_key", API_KEY)
-                .buildAndExpand(gameId)
+                .buildAndExpand(matchId)
                 .toUriString();
+
+        GameDataExport gameData;
 
         try {
             ResponseEntity<GameData> response = restTemplate.getForEntity(url, GameData.class);
-            return response.getBody();
+            gameData = new GameDataExport(response.getBody());
+            saveGameData(gameData);
         }catch (Exception e){
-            return null;
+            gameData = null;
         }
+        return gameData;
     }
 
-    private ArrayList<GameDataExport> getExportData(ArrayList<GameData> data) {
-        ArrayList<GameDataExport> exportList = new ArrayList<>();
-        for (GameData gameData : data) {
-            exportList.add(new GameDataExport(gameData));
-        }
-        return exportList;
+    private void saveGameData(GameDataExport gameData) {
+        repository.save(gameData);
     }
+
+    private GameDataExport findGameInDatabaseById( String matchId) {
+        return repository.findById(matchId).orElse(null);
+    }
+
+
 
 
 
