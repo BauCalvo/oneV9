@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface GameService {
 
-  public ArrayList<GameDataDTO> getGamesDataByGameId(List<String> gameIds);
+   ArrayList<GameDataDTO> getGamesDataByGameId(List<String> gameIds);
 
-  public GameDataDTO getGameDataByGameId(String matchId);
+   GameDataDTO getGameDataByGameId(String matchId);
 }

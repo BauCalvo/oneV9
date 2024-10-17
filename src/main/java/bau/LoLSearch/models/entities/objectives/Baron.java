@@ -8,4 +8,4 @@ import lombok.*;
 public class Baron {
   private boolean first;
   private int kills;
-};
+}
