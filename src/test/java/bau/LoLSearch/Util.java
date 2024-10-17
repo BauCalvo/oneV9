@@ -14,9 +14,7 @@ public class Util {
     try {
       File jsonFile = new File(path);
 
-      GameData testDAta = objectMapper.readValue(jsonFile, new TypeReference<GameData>() {});
-
-      return testDAta;
+      return objectMapper.readValue(jsonFile, new TypeReference<GameData>() {});
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -29,9 +27,7 @@ public class Util {
     try {
       File jsonFile = new File(path);
 
-      AccountMainInfo testDAta = objectMapper.readValue(jsonFile, new TypeReference<AccountMainInfo>() {});
-
-      return testDAta;
+      return objectMapper.readValue(jsonFile, new TypeReference<AccountMainInfo>() {});
 
     } catch (Exception e) {
       e.printStackTrace();

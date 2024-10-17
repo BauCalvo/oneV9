@@ -1,7 +1,6 @@
 package bau.LoLSearch.controllers;
 
 
-import bau.LoLSearch.exceptions.AccountNotFoundException;
 import bau.LoLSearch.models.dtos.AccountGamesDTO;
 import bau.LoLSearch.models.dtos.GameDataDTO;
 import bau.LoLSearch.models.entities.AccountMainInfo;
