@@ -1,7 +1,7 @@
 package bau.LoLSearch.models.dtos;
 
-import bau.LoLSearch.models.entities.GameInfo;
-import bau.LoLSearch.models.entities.GameMetaData;
+import bau.LoLSearch.models.entities.game.GameInfo;
+import bau.LoLSearch.models.entities.game.GameMetaData;
 import lombok.*;
 
 @Getter

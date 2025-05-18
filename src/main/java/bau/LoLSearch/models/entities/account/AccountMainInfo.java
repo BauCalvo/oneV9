@@ -1,6 +1,8 @@
-package bau.LoLSearch.models.entities;
+package bau.LoLSearch.models.entities.account;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

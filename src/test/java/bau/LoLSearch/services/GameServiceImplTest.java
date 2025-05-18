@@ -2,7 +2,7 @@ package bau.LoLSearch.services;
 
 import bau.LoLSearch.mappers.GameMapper;
 import bau.LoLSearch.models.dtos.GameDataDTO;
-import bau.LoLSearch.models.entities.GameData;
+import bau.LoLSearch.models.entities.game.GameData;
 import bau.LoLSearch.repositories.GameDataRepository;
 import bau.LoLSearch.Util;
 import org.junit.jupiter.api.BeforeAll;
@@ -42,7 +42,7 @@ class GameServiceImplTest {
   @BeforeAll
   static void beforeAll()  {
     testData = Util.jsonToGameData("src/test/java/bau/LoLSearch/testData.json");
-    testDataDTO = GameMapper.INSTANCE.gameToGameDTO(testData);
+    testDataDTO = GameMapper.getInstance().gameToGameDTO(testData);
   }
 
   @Test

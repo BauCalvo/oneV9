@@ -2,7 +2,7 @@ package bau.LoLSearch.services;
 
 import bau.LoLSearch.exceptions.AccountNotFoundException;
 import bau.LoLSearch.exceptions.ErrorResponse;
-import bau.LoLSearch.models.entities.AccountMainInfo;
+import bau.LoLSearch.models.entities.account.AccountMainInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -63,6 +63,7 @@ public class AccountServiceImpl implements AccountService {
     String url = UriComponentsBuilder
       .fromUriString("https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids")
       .queryParam("api_key", API_KEY)
+      .queryParam("type", "ranked")
       .queryParamIfPresent("queue", queue)
       .buildAndExpand(puuid)
       .toUriString();

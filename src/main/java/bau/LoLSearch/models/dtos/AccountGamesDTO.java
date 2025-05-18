@@ -1,6 +1,6 @@
 package bau.LoLSearch.models.dtos;
 
-import bau.LoLSearch.models.entities.AccountMainInfo;
+import bau.LoLSearch.models.entities.account.AccountMainInfo;
 import lombok.*;
 
 import java.util.ArrayList;

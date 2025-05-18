@@ -1,6 +1,8 @@
-package bau.LoLSearch.models.entities;
+package bau.LoLSearch.models.entities.game;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +20,7 @@ public class GameParticipant {
   private   int item3; private   int item4;private   int item5; private   int item6;
   private  int itemsPurchased;private   int kills ;private  int magicDamageDealtToChampions;
   private   int magicDamageTaken;private   int neutralMinionsKilled;private   int participantId;
-  private  int pentaKills;private   Perks perks; private  int physicalDamageDealtToChampions;
+  private  int pentaKills;private Perks perks; private  int physicalDamageDealtToChampions;
   private   String puuid; private   String riotIdGameName; private  String riotIdTagline;
   private   int sightWardsBoughtInGame;   private   int summoner1Id;private   int summoner2Id;
   private   String summonerName;  private  int teamId;private   String teamPosition;

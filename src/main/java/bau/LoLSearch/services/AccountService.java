@@ -1,6 +1,6 @@
 package bau.LoLSearch.services;
 
-import bau.LoLSearch.models.entities.AccountMainInfo;
+import bau.LoLSearch.models.entities.account.AccountMainInfo;
 import java.util.ArrayList;
 import java.util.Optional;
 

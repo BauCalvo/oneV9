@@ -1,7 +1,7 @@
 package bau.LoLSearch.repositories;
 
 import bau.LoLSearch.Util;
-import bau.LoLSearch.models.entities.GameData;
+import bau.LoLSearch.models.entities.game.GameData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
@@ -14,7 +14,7 @@ class GameDataRepositoryTest {
   @Autowired
   private GameDataRepository gameDataRepository;
 
-  private GameData testData;
+  private final GameData testData;
 
 
   GameDataRepositoryTest(){

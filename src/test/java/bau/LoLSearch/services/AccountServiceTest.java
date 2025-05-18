@@ -1,7 +1,7 @@
 package bau.LoLSearch.services;
 
 import bau.LoLSearch.Util;
-import bau.LoLSearch.models.entities.AccountMainInfo;
+import bau.LoLSearch.models.entities.account.AccountMainInfo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

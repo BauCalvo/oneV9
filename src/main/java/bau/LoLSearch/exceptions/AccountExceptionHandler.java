@@ -11,4 +11,8 @@ public class AccountExceptionHandler {
   public ResponseEntity<String> handleAccountException(AccountNotFoundException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
   }
+  @ExceptionHandler(NullTimelineException.class)
+  public ResponseEntity<String> nullTimelineException(NullTimelineException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+  }
 }

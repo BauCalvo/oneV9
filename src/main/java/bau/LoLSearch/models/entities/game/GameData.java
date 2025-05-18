@@ -1,4 +1,4 @@
-package bau.LoLSearch.models.entities;
+package bau.LoLSearch.models.entities.game;
 
 import bau.LoLSearch.exceptions.NullGameException;
 import com.mongodb.lang.NonNull;
@@ -17,14 +17,12 @@ public class GameData {
   private  String matchId;
 
   @NonNull
-  private  GameMetaData metadata;
+  private GameMetaData metadata;
   @NonNull
-  private  GameInfo info;
+  private GameInfo info;
 
-  public GameData( GameMetaData metadata, GameInfo info) {
+  public GameData(@NonNull GameMetaData metadata, @NonNull GameInfo info) {
 
-    if (metadata == null || info == null)
-      throw new NullGameException("Null GameMetaData");
     this.metadata = metadata;
     this.info = info;
 

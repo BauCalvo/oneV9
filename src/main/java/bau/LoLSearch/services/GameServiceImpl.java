@@ -2,8 +2,9 @@ package bau.LoLSearch.services;
 
 import bau.LoLSearch.mappers.GameMapper;
 import bau.LoLSearch.models.dtos.GameDataDTO;
-import bau.LoLSearch.models.entities.GameData;
+import bau.LoLSearch.models.entities.game.GameData;
 import bau.LoLSearch.repositories.GameDataRepository;
+import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
@@ -28,13 +29,15 @@ public class GameServiceImpl implements GameService {
 
     private final GameDataRepository repository;
 
+    private ExecutorService executor;
+
 
     @Value("${api.key}")
     private String API_KEY;
 
     public ArrayList<GameDataDTO> getGamesDataByGameId(List<String> gameIds) {
 
-        ExecutorService executor = Executors.newFixedThreadPool(10);
+        ExecutorService executor = getExecutor();
 
         List<Future<GameDataDTO>> futures = new ArrayList<>();
 
@@ -52,8 +55,6 @@ public class GameServiceImpl implements GameService {
             e.printStackTrace();
         }
 
-        executor.shutdown();
-
         return gameDataList;
     }
 
@@ -63,7 +64,7 @@ public class GameServiceImpl implements GameService {
         gameData = fetchGameFromDatabaseById(matchId);
         if (gameData == null) {
             gameData = fetchGameFromApiById(matchId);
-            saveGameData(gameData);
+            if(gameData != null) { saveGameData(gameData);}
         }
         return gameData;
     }
@@ -78,7 +79,7 @@ public class GameServiceImpl implements GameService {
 
         try {
             ResponseEntity<GameData> response = restTemplate.getForEntity(url, GameData.class);
-            return GameMapper.INSTANCE.gameToGameDTO(response.getBody());
+            return GameMapper.getInstance().gameToGameDTO(response.getBody());
         }catch (Exception e) {
             return null;
         }
@@ -89,14 +90,29 @@ public class GameServiceImpl implements GameService {
         GameData gameData = repository.findById(matchId).orElse(null);
         GameDataDTO gameDataDTO = null;
         if (gameData != null) {
-            gameDataDTO = GameMapper.INSTANCE.gameToGameDTO(gameData);
+            gameDataDTO = GameMapper.getInstance().gameToGameDTO(gameData);
         }
 
         return gameDataDTO;
     }
 
     public void saveGameData(GameDataDTO gameDataDTO) {
-        GameData gameData = GameMapper.INSTANCE.gameDTOToGameData(gameDataDTO);
+        GameData gameData = GameMapper.getInstance().gameDTOToGameData(gameDataDTO);
         repository.save(gameData);
+    }
+
+    private ExecutorService getExecutor() {
+        if (executor == null) {
+            executor =  Executors.newFixedThreadPool(5);;
+        }
+        return executor;
+
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        if (executor != null && !executor.isShutdown()) {
+            executor.shutdown();
+        }
     }
 }
